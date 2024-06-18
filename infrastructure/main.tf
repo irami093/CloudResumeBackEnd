@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "myfunction" {
-  filename         = data.archive_file.zip.output_path
-  source_code_hash = data.archive_file.zip.output_base64sha256
+  filename         = data.archive_file.zip_python_code.output_path
+  source_code_hash = data.archive_file.zip_python_code.output_base64sha256
   function_name    = "myfunction"
   role             = aws_iam_role.iam_forlambda.arn
   handler          = "function.lambda_handler"
@@ -61,9 +61,10 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_role" {
   policy_arn = aws_iam_policy.iam_policy_resume_challenge.arn
 }
 
+//Need to troubleshoot this section
 data "archive_file" "zip_python_code" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda/counterfunc.py"
+  source_dir  = "${path.module}/lambda"
   output_path = "${path.module}/lambda/counterfunc.zip"
 }
 
